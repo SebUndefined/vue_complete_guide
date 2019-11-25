@@ -1,0 +1,23 @@
+<html>
+    <head><script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+    </head><body><div id="app">
+        <p v-if="show">You can see me!</p>
+        <p v-else>Now you see me</p>
+        <template v-if="show">
+            <h1>Heading</h1>
+            <p>Inside the template</p>
+        </template>
+        <p v-show="show">Do you also see me?</p>
+        <button @click="show = !show">Show!</button>
+    </div>
+    </body>
+    <script>
+        new Vue({
+	        el: '#app',
+	        data: {
+		        show: true
+	        }
+        })
+    </script>
+</html>
