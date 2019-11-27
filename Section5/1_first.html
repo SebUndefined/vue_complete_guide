@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app1">
+        <h1 ref="heading">{{ title }}</h1>
+        <button v-on:click="show" ref="myButton">Show Paragraph</button>
+        <button v-on:click="destroy">Destroy</button>
+        <p v-if="showParagraph">This is not always visible</p>
+    </div>
+    <div id="app2">
+        <h1 ref="heading">{{ title }}</h1>
+        <button @click="changeInViewOne">Change something in vue 1</button>
+        <!-- <button v-on:click="show">Show Paragraph</button>
+        <p v-if="showParagraph">This is not always visible</p> -->
+        <hello></hello>
+        <hello></hello>
+        <hello></hello>
+        <hello></hello>
+    </div>
+
+    <div id="app3"></div>
+    
+</body>
+<script>
+        Vue.component('hello', {
+          template: '<h1>Hello form template component</h1>'
+        })
+
+        let vm1 = new Vue({
+          //el: '#app1',
+          data: {
+            title: 'The VueJS Instance',
+            showParagraph: false
+          },
+          methods: {
+            show: function() {
+              this.showParagraph = true;
+              this.updateTitle('The VueJS Instance (Updated)');
+              console.log(this.$refs.myButton)
+              this.$refs.myButton.innerText = "Change button text"
+            },
+            updateTitle: function(title) {
+              this.title = title;
+            },
+            destroy: function(){
+              this.$destroy();
+            }
+          },
+          computed: {
+            lowercaseTitle: function() {
+              return this.title.toLowerCase();
+            }
+          },
+          watch: {
+            title: function(value) {
+              alert('Title changed, new value: ' + value);
+            }
+          },
+          // Lifecycle
+          beforeCreate: function() {
+            console.log("Before created")
+          },
+          created: function() {
+            console.log("Created")
+          },
+          beforeMount: function() {
+            console.log("Before mount")
+          },
+          mounted: function() {
+            console.log("Mounted")
+          },
+          beforeUpdate: function() {
+            console.log("Before update")
+          },
+          updated: function() {
+            console.log("Updated")
+          },
+          beforeDestroy: function() {
+            console.log("Before destroy")
+          },
+          destroyed: function() {
+            console.log("Destroyed")
+          },
+        });
+
+        vm1.$mount("#app1")
+        //vm1.$refs.heading.innerText = "Change by refs"
+        setTimeout(function(){
+          vm1.title = "Title changed by timeout";
+          vm1.show()
+        }, 1000)
+
+        // Not valid and does not work as normal prop/data. Vue does not create getter/setter. 
+        vm1.newProp = "New Prop !";
+        console.log(vm1)
+        let vm2 = new Vue({
+          el: "#app2",
+          data: {
+            title: "The second instance"
+          },
+          methods: {
+            changeInViewOne: function(){
+              vm1.title= "Title changed in vm2!"
+            }
+          },
+        })
+
+        let vm3 = new Vue({
+          template: '<h1>Hello form template</h1>'
+        })
+        vm3.$mount();
+        document.getElementById('app3').appendChild(vm3.$el)
+
+        
+    </script>
+
+
+</html>
