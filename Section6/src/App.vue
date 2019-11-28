@@ -1,10 +1,18 @@
 <template>
-  <h1>Hello world !! </h1>
+<div>
+  <h1>Server status: {{ status }} </h1>
+  <app-servers></app-servers>
+</div>
+  
 </template>
 
 <script>
   export default {
-    
+    data: function (){
+      return {
+          status: "Critical"
+      }
+    }
   }
 </script>
 
