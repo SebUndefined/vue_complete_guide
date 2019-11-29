@@ -3,13 +3,19 @@
         <h1>The User Component</h1>
         <p>I'm an awesome User!</p>
         <button @click="changeName">Change my name</button>
+        <p>Name is {{ name }}</p>
+        <p>Age is {{ age }}</p>
         <hr>
         <div class="row">
             <div class="col-xs-12 col-sm-6">
-                <app-user-detail v-bind:name="name"></app-user-detail>
+                <app-user-detail v-bind:name="name" 
+                    v-on:nameWasReset="name = $event"
+                    :resetFn="resetName"
+                    :userAge="age"></app-user-detail>
             </div>
             <div class="col-xs-12 col-sm-6">
-                <app-user-edit></app-user-edit>
+                <app-user-edit :userAge="age" 
+                @ageWasEdited="age = $event"></app-user-edit>
             </div>
         </div>
     </div>
@@ -22,7 +28,8 @@
     export default {
         data: function(){
             return{
-                name: 'Seb'
+                name: 'Seb',
+                age: 27
             }
         },
         components: {
@@ -32,6 +39,10 @@
         methods: {
             changeName: function(){
                 this.name = 'Anna'
+            },
+            resetName: function(){
+                this.name = "Seb";
+                this.$emit('nameWasReset', this.name);
             }
         },
     }
